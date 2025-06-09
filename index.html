@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PayPal Calculator</title>
+
+  <!-- Load Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f5f6f7;
+    }
+    .form-group label {
+      font-weight: bold;
+    }
+    .result {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="container">
+      <h3 class="mt-4">PayPal Estimate</h4>
+
+      <!-- Item Price -->
+      <div class="mb-3">
+        <label for="itemPrice">Item Price (JPY):</label>
+        <input type="text" id="itemPrice" class="form-control" placeholder="Enter item price" oninput="calculateTotal()">
+      </div>
+
+      <!-- Shipping Fee -->
+      <div class="mb-3">
+        <label for="shippingFee">Shipping Fee (JPY):</label>
+        <input type="text" id="shippingFee" class="form-control" placeholder="Enter shipping fee" oninput="calculateTotal()">
+      </div>
+
+      <!-- PayPal Fee (Auto-computed) -->
+      <div class="mb-3">
+        <label for="paypalFee">PayPal Fee (5%):</label>
+        <input type="text" id="paypalFee" class="form-control" readonly>
+      </div>
+
+      <!-- Total Price in Yen (Auto-computed) -->
+      <div class="mb-3">
+        <label for="totalPrice" style="font-weight:bold;">Total Price (JPY):</label>
+        <input type="text" id="totalPrice" class="form-control result" readonly>
+      </div>
+
+      <!-- Estimated Price in Peso (Auto-computed) -->
+      <div class="mb-3">
+        <label for="totalPeso" style="font-weight:bold;">Estimated Price (PHP):</label>
+        <input type="text" id="totalPeso" class="form-control result" readonly>
+      </div>
+	  
+	  <p class="text-center mt-3">※ The final price in Peso will be shown in PayPal when you settle your invoice.</p>
+    </div>
+  </div>
+
+  <script>
+  function formatAndCalculate(input) {
+    // Remove non-numeric characters except for decimal point
+    let value = input.value.replace(/,/g, ''); // Remove commas
+    value = value.replace(/[^\d.]/g, ''); // Keep only numbers and decimal
+
+    // Format with commas (thousands separator)
+    let formattedValue = parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    
+    // Update the field with formatted value
+    input.value = formattedValue;
+
+    // Trigger total calculation
+    calculateTotal();
+  }
+
+  function calculateTotal() {
+    let itemPrice = parseFloat(document.getElementById('itemPrice').value.replace(/,/g, '')) || 0;
+    let shippingFee = parseFloat(document.getElementById('shippingFee').value.replace(/,/g, '')) || 0;
+    
+    let paypalFee = (itemPrice + shippingFee) * 0.05;
+    let totalYen = itemPrice + shippingFee + paypalFee;
+    let totalPeso = totalYen * 0.4;
+
+    document.getElementById('paypalFee').value = paypalFee.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.getElementById('totalPrice').value = totalYen.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.getElementById('totalPeso').value = totalPeso.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+</script>
+
+</body>
+</html>
