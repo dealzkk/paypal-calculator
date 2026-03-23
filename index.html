@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PayPal Calculator</title>
 
-  <!-- Load Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
   <style>
     body {
       background-color: #f5f6f7;
+      padding-top: 50px;
+      padding-bottom: 50px;
     }
     .form-group label {
       font-weight: bold;
@@ -21,48 +22,54 @@
       font-weight: bold;
       color: #333;
     }
+    .calculator-card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 <body>
 
-  <div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="container">
-      <h3 class="mt-4">PayPal Estimate</h4>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        
+        <div class="calculator-card">
+          <h3 class="mb-4 text-primary"><i class="fa-brands fa-paypal"></i> PayPal Estimate</h3>
 
-      <!-- Item Price -->
-      <div class="mb-3">
-        <label for="itemPrice">Item Price (JPY):</label>
-        <input type="text" id="itemPrice" class="form-control" placeholder="Enter item price" oninput="calculateTotal()">
-      </div>
+          <div class="mb-3">
+            <label for="itemPrice" class="form-label">Item Price (JPY):</label>
+            <input type="number" id="itemPrice" class="form-control" placeholder="Enter item price" oninput="calculateTotal()">
+          </div>
 
-      <!-- Shipping Fee -->
-      <div class="mb-3">
-        <label for="shippingFee">Shipping Fee (JPY):</label>
-        <input type="text" id="shippingFee" class="form-control" placeholder="Enter shipping fee" oninput="calculateTotal()">
-      </div>
+          <div class="mb-3">
+            <label for="shippingFee" class="form-label">Shipping Fee (JPY):</label>
+            <input type="number" id="shippingFee" class="form-control" placeholder="Enter shipping fee" oninput="calculateTotal()">
+          </div>
 
-      <!-- PayPal Fee (Auto-computed) -->
-      <div class="mb-3">
-        <label for="paypalFee">PayPal Fee (5%):</label>
-        <input type="text" id="paypalFee" class="form-control" readonly>
-      </div>
+          <div class="mb-3">
+            <label for="paypalFee" class="form-label">PayPal Fee (5%):</label>
+            <input type="text" id="paypalFee" class="form-control bg-light" readonly>
+          </div>
 
-      <!-- Total Price in Yen (Auto-computed) -->
-      <div class="mb-3">
-        <label for="totalPrice" style="font-weight:bold;">Total Price (JPY):</label>
-        <input type="text" id="totalPrice" class="form-control result" readonly>
-      </div>
+          <hr>
 
-      <!-- Estimated Price in Peso (Auto-computed) -->
-      <div class="mb-3">
-        <label for="totalPeso" style="font-weight:bold;">Estimated Price (PHP):</label>
-        <input type="text" id="totalPeso" class="form-control result" readonly>
-      </div>
-	  
-	  <p class="text-center mt-3">※ The final price in Peso will be shown in PayPal when you settle your invoice.</p>
-    </div>
+          <div class="mb-3">
+            <label for="totalPrice" class="form-label">Total Price (JPY):</label>
+            <input type="text" id="totalPrice" class="form-control result bg-light" readonly>
+          </div>
 
-	<h3 class="mt-5 mb-3">Shipping Fees Reference</h3>
+          <div class="mb-3">
+            <label for="totalPeso" class="form-label">Estimated Price (PHP):</label>
+            <input type="text" id="totalPeso" class="form-control result bg-light text-success" readonly>
+          </div>
+          
+          <p class="text-muted small text-center mt-3">※ The final price in Peso will be shown in PayPal when you settle your invoice.</p>
+        </div>
+
+        <h3 class="mt-5 mb-3">Shipping Fees Reference</h3>
         <div class="table-responsive">
           <table class="table table-bordered shadow-sm" style="background-color: white;">
             <thead class="table-dark">
@@ -119,37 +126,28 @@
             </tbody>
           </table>
         </div>
+
+      </div>
+    </div>
   </div>
 
   <script>
-  function formatAndCalculate(input) {
-    // Remove non-numeric characters except for decimal point
-    let value = input.value.replace(/,/g, ''); // Remove commas
-    value = value.replace(/[^\d.]/g, ''); // Keep only numbers and decimal
-
-    // Format with commas (thousands separator)
-    let formattedValue = parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    
-    // Update the field with formatted value
-    input.value = formattedValue;
-
-    // Trigger total calculation
-    calculateTotal();
-  }
-
   function calculateTotal() {
-    let itemPrice = parseFloat(document.getElementById('itemPrice').value.replace(/,/g, '')) || 0;
-    let shippingFee = parseFloat(document.getElementById('shippingFee').value.replace(/,/g, '')) || 0;
+    // Get values from inputs
+    let itemPrice = parseFloat(document.getElementById('itemPrice').value) || 0;
+    let shippingFee = parseFloat(document.getElementById('shippingFee').value) || 0;
     
+    // Logic
     let paypalFee = (itemPrice + shippingFee) * 0.05;
     let totalYen = itemPrice + shippingFee + paypalFee;
-    let totalPeso = totalYen * 0.4;
+    let totalPeso = totalYen * 0.4; // Using your provided exchange rate multiplier
 
+    // Update the UI
     document.getElementById('paypalFee').value = paypalFee.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     document.getElementById('totalPrice').value = totalYen.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     document.getElementById('totalPeso').value = totalPeso.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
-</script>
+  </script>
 
 </body>
 </html>
