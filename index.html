@@ -12,119 +12,99 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      overflow: hidden; 
-      background-color: #f8f9fa;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      color: #1c1e21;
-    }
+  /* Prevent the entire page from scrolling on desktop */
+  html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; 
+    background-color: #f8f9fa;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #1c1e21;
+  }
 
-    .app-wrapper {
-      height: 100vh;
-      padding: 10px;
-      display: flex;
-      justify-content: center;
-    }
+  .app-wrapper {
+    height: 100vh;
+    padding: 10px; /* Slim outer padding */
+    display: flex;
+    justify-content: center;
+  }
 
-    .tool-column {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      max-width: 400px; /* Narrower for small screens */
-      width: 100%;
-    }
+  .tool-column {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    max-width: 400px; /* Narrow width to match Estimate */
+    width: 100%;
+  }
 
-    .tool-card {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 12px;
-      border: 1px solid #dee2e6;
-      height: 100%;
-      overflow-y: auto;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-    }
+  .tool-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #dee2e6;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+  }
 
-    .section-title {
-      font-weight: 700;
-      color: #003087;
-      margin-bottom: 1.25rem;
-      display: flex;
-      align-items: center;
-    }
+  .tool-card::-webkit-scrollbar { width: 5px; }
+  .tool-card::-webkit-scrollbar-track { background: transparent; }
+  .tool-card::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 10px; }
 
-    .form-label {
-      font-weight: 600;
-      color: #6c757d;
-      font-size: 0.75rem;
-      margin-bottom: 0.25rem;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-    }
+  .section-title {
+    font-weight: 700;
+    color: #003087;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    background: white;
+    padding-bottom: 10px;
+  }
 
-    .form-control, .form-select {
-      border-radius: 8px;
-      padding: 12px;
-      border: 1px solid #ced4da;
-      font-size: 1rem; /* Larger font for easier tapping */
-    }
+  .sticky-title {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
 
-    /* STACKED SUMMARY LAYOUT */
-    .calc-summary-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin: 15px 0;
-    }
+  .form-label {
+    font-weight: 600;
+    color: #6c757d;
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
 
-    .summary-box {
-      padding: 12px 15px;
-      border-radius: 8px;
-      background: #f8f9fa;
-      border: 1px solid #e9ecef;
-      display: flex;
-      justify-content: space-between; /* Label left, Value right */
-      align-items: center;
-    }
+  /* COMPACT INPUTS */
+  .form-control, .form-select {
+    border-radius: 8px;
+    padding: 8px 10px;
+    border: 1px solid #ced4da;
+    font-size: 0.9rem;
+  }
 
-    .summary-box .data-label { 
-      font-size: 0.75rem; 
-      font-weight: 600;
-      color: #6c757d;
-    }
-    
-    .summary-box .data-value { 
-      font-size: 1rem; 
-      font-weight: 700;
-    }
+  .btn-primary { background-color: #0070ba; border: none; font-weight: 600; }
+  .btn-success { font-weight: 600; font-size: 0.85rem; }
 
-    .summary-highlight { 
-      background: #f0f7ff; 
-      border-color: #cfe2ff; 
-    }
+  .result-group {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #e9ecef;
+    margin-top: 10px;
+  }
 
-    .peso-display {
-      background-color: #f0f7ff;
-      border: 1px solid #cfe2ff;
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      margin-top: auto; /* Pushes total to the bottom */
-    }
+  hr { border-color: #edf2f7; margin: 15px 0; }
 
-    .peso-total { font-size: 2.4rem; font-weight: 800; color: #0070ba; }
-    .hidden { display: none; }
-    hr { border-color: #edf2f7; margin: 15px 0; }
-
-    @media (max-width: 991px) {
-      html, body { overflow-y: auto; }
-      .app-wrapper { height: auto; }
-      .tool-column { height: auto; }
-    }
-  </style>
+  @media (max-width: 991px) {
+    html, body { overflow-y: auto; }
+    .app-wrapper { height: auto; padding: 10px; }
+    .tool-column { height: 90vh; max-width: 100%; }
+  }
+</style>
 </head>
 <body>
 
